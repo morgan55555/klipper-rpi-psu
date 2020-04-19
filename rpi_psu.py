@@ -14,6 +14,9 @@
 # virtualenv ${PYTHONDIR}
 # ${PYTHONDIR}/bin/pip install gpiozero
 #
+# git clone https://github.com/morgan55555/klipper-rpi-psu.git
+# ln -s ~/klipper-rpi-psu/rpi_psu.py ~/klipper/klippy/extras/rpi_psu.py
+#
 import gpiozero
 
 class Rpi_PSU:
