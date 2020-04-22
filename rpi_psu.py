@@ -45,6 +45,8 @@ class Rpi_PSU:
         self.gcode.run_script_from_command(self.shutdown_gcode)
         self.psu_pin.off()
         self.gcode.respond_info("PSU is disabled.")
+    def get_status(self):
+        return self.psu_pin.value
 
 
 def load_config(config):
