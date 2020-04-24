@@ -28,8 +28,10 @@ class Rpi_PSU:
             active_high = config.getboolean('active_high', False)
             _psu_pin = gpiozero.DigitalOutputDevice( pin=pin, active_high=active_high, initial_value=False )
         self.psu_pin = _psu_pin
-        self.startup_gcode = config.get('startup_gcode', '')
-        self.shutdown_gcode = config.get('shutdown_gcode', '')
+        self.before_startup_gcode = config.get('before_startup_gcode', '')
+        self.after_startup_gcode = config.get('after_startup_gcode', '')
+        self.before_shutdown_gcode = config.get('before_shutdown_gcode', '')
+        self.after_shutdown_gcode = config.get('after_shutdown_gcode', '')
         self.gcode = self.printer.lookup_object('gcode')
         self.gcode.register_command(
             'M80', self.cmd_M80, when_not_ready=True, desc=self.cmd_M80_desc)
@@ -37,13 +39,15 @@ class Rpi_PSU:
             'M81', self.cmd_M81, when_not_ready=True, desc=self.cmd_M81_desc)
     cmd_M80_desc = 'Turn on PSU'
     def cmd_M80(self, params):
+        self.gcode.run_script_from_command(self.before_startup_gcode)
         self.psu_pin.on()
+        self.gcode.run_script_from_command(self.after_startup_gcode)
         self.gcode.respond_info("PSU is enabled.")
-        self.gcode.run_script_from_command(self.startup_gcode)
     cmd_M81_desc = 'Turn off PSU'
     def cmd_M81(self, params):
-        self.gcode.run_script_from_command(self.shutdown_gcode)
+        self.gcode.run_script_from_command(self.before_shutdown_gcode)
         self.psu_pin.off()
+        self.gcode.run_script_from_command(self.after_shutdown_gcode)
         self.gcode.respond_info("PSU is disabled.")
     def get_status(self):
         return self.psu_pin.value
