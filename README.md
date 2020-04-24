@@ -30,10 +30,14 @@ Just copy that code and change parameters to any that you need.
 psu_pin: 17
 # Invert enable logic, useful for inverted relays
 active_high: False
+# Run gcode before startup
+# before_startup_gcode: 
 # Run gcode after startup
-startup_gcode: RESTART
+after_startup_gcode: RESTART
 # Run gcode before shutdown
-# shutdown_gcode: 
+# before_shutdown_gcode: 
+# Run gcode after shutdown
+after_shutdown_gcode: RESTART
 ```
 
 Available pin formats: [link](https://gpiozero.readthedocs.io/en/stable/recipes.html#pin-numbering)
